@@ -1,0 +1,36 @@
+<html>
+  <head>
+    <title>Full Friends</title>
+  </head>
+  <link rel="stylesheet"
+  8href="https://cdnjs.cloudflare.com/ajax/libs/skeleton/2.0.4/skeleton.css">
+  <body>
+      <h1>These are all my friends!</h1>
+      <table class="u-full-width">
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Age</th>
+              <th>Friend Since</th>
+              <th> </th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for friend in all_friends%}
+            <tr>
+              <td>{{ friend['name'] }}</td>
+              <td>{{ friend['age'] }}</td>
+              <td>{{friend['day']}}</td>
+              <td>{{friend['year']}}</td>
+            </tr>
+            {%endfor%}
+          </tbody>
+        </table>
+    <h2>Add a Friend</h2>
+    <form action='/friends' method='post'>
+      Name: <input type="text" name="name" id="name">
+      Age: <input type="text" name='age' id='age'>
+      <input type="submit" value="Add">
+    </form>
+  </body>
+  </html>
