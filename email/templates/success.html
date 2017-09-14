@@ -1,0 +1,26 @@
+<html>
+    <head>
+      <title>Success</title>
+    </head>
+    <link rel="stylesheet"
+    8href="https://cdnjs.cloudflare.com/ajax/libs/skeleton/2.0.4/skeleton.css">
+    <body>
+        <h1>Success!</h1>
+        <table class="u-full-width">
+            <thead>
+              <tr>
+                <th>Email</th>
+                <th>Added</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for email in all_emails%}
+              <tr>
+                <td>{{ email['email'] }}</td>
+                <td>{{ email['day'] }}</td>
+              </tr>
+              {%endfor%}
+            </tbody>
+          </table>
+    </body>
+    </html>

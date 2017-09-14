@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Registration Form Assignment</title>
+    <link rel="stylesheet"
+    8href="https://cdnjs.cloudflare.com/ajax/libs/skeleton/2.0.4/skeleton.css">
+  </head>
+  <body>
+    <h1>GIVE ME YOUR EMAIL ADDRESS!!!!!</h1>
+    <h3>please?</h3>
+    <h2>AKA give info...still get chastised for it...</h2>
+    {% with messages = get_flashed_messages() %}
+      {% if messages %}
+        {% for message in messages %}
+          <p>{{message}}</p>
+        {% endfor %}
+      {% endif %}
+    {% endwith %}
+    <form action="/process" method="post">
+      Email: <input type="email" id = 'email' name = 'email'>
+      <input type="submit" name="submit" value="submit">
+    </form>
+  </body>
+</html>
