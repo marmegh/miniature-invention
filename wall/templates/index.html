@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>The Wall</title>
+    <link rel="stylesheet"
+    8href="https://cdnjs.cloudflare.com/ajax/libs/skeleton/2.0.4/skeleton.css">
+  </head>
+  <body>
+    {%if login == True%}
+    <div class = 'container'>
+      <div class = 'row'>
+        <h1 class = 'ten columns'>The Wall</h1>
+        <div class = 'one column'>Hello {{fname}}</div>
+        <a class = 'one column' href="/logout">logout</a>
+      </div>
+    </div>
+    <form action="/message" method='POST' id = 'message'>
+      <textarea form = 'message' name="message" cols="130" rows="5"></textarea>
+      <input type="submit">
+    </form>
+      {% for message in all_messages%}
+        <p>{{message['first_name']}} {{message['last_name']}} * {{message['created_at']}}<p>
+        <p>{{message['message']}}            
+              <form action="/comment" method='POST' id = 'comment'>
+                <input type="hidden" id='link' name = 'message_id' value="%s" %{{message['message_id']}}>
+                <textarea form = 'comment' name="comment" cols="130" rows="5"></textarea>
+                <input type="submit">
+              </form>
+      {%endfor%}
+    {%else%}
+      <h1>The Wall</h1>
+      <h2>Existing User - Login</h2>
+      <form action="/login" method="post">
+        Email: <input type="email" name="email">
+        Password: <input type="password" name="password">
+        <input type="submit" name="login">
+      </form>
+      <h2>New User: Register</h2>
+      {% with messages = get_flashed_messages() %}
+      {% if messages %}
+        {% for message in messages %}
+          <p>{{message}}</p>
+        {% endfor %}
+      {% endif %}
+    {% endwith %}
+    {%if test == False%}
+    <form action="/register" method="post">
+      First Name: <input class = 'row' id='fname' type = 'text' name = 'fname' value = ''>
+      Last Name: <input class = 'row' id='lname' type = 'text' name = 'lname' value = "">
+      Email: <input class = 'row' id='email' type = 'email' name = 'email' value = "">
+      Password: <input class = 'row' id='password' type = 'password' name = 'password' value = "">
+      Confirm Password: <input id='confirmpw' type= 'password' name = 'confirmpw' value = "">
+      <input class = 'row' type="submit" name="submit" value="submit">
+    </form>
+    {%endif%}
+    {%if test == True%}
+    <form action="/register" method="post">
+      First Name: <input class = 'row' id='fname' type = 'text' name = 'fname' value = '{{fname}}'>
+      Last Name: <input class = 'row' id='lname' type = 'text' name = 'lname' value = "{{lname}}">
+      Email: <input class = 'row' id='email' type = 'email' name = 'email' value = "{{email}}">
+      Password: <input class = 'row' id='password' type = 'password' name = 'password' value = "">
+      Confirm Password: <input id='confirmpw' type= 'password' name = 'confirmpw' value = "">
+      <input class = 'row' type="submit" name="submit" value="submit">
+    </form>
+    {%endif%}
+  {%endif%}
+</body>
+</html>
