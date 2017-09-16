@@ -9,14 +9,16 @@ app.secret_key = "CakeByTheOcean"
 mysql = MySQLConnector(app,'wall')
 @app.route('/')
 def index():
-    query = ("SELECT users.first_name, users.last_name, messages.message, messages.id, messages.created_at FROM users JOIN messages ON users.id = messages.user_id ORDER BY messages.created_at DESC")
-    messages = mysql.query_db(query)
+    query1 = ("SELECT users.first_name, users.last_name, messages.message, messages.id, DATE_FORMAT(messages.created_at, '%M %D, %Y at %l:%i %p') AS date FROM users JOIN messages ON users.id = messages.user_id ORDER BY messages.created_at DESC")
+    messages = mysql.query_db(query1)
+    query2 = ("SELECT comments.comment, DATE_FORMAT(comments.created_at, '%M %D, %Y at %l:%i %p') AS date, users.first_name, users.last_name, comments.message_id FROM comments LEFT JOIN users ON comments.user_id = users.id ORDER BY comments.created_at ASC")
+    comments = mysql.query_db(query2)
     if session.get('testy') is None:
         session['fname'] = 'First Name'
         session['lname'] = 'Last Name'
         session['email'] = 'Email'
         session['testy'] = False
-    return render_template('index.html', fname = session['fname'], lname = session['lname'], email = session['email'], test = session['testy'], login = session['login'], all_messages=messages, length = len(messages))
+    return render_template('index.html', fname = session['fname'], lname = session['lname'], email = session['email'], test = session['testy'], login = session['login'], all_messages=messages, all_comments=comments)
 @app.route('/register', methods=['POST'])
 def registration():
     session['password'] = request.form['password']
@@ -104,6 +106,12 @@ def message():
     return redirect('/')
 @app.route('/comment', methods=['POST'])
 def comment():
-    print request.form['message_id']
+    data={
+        'comment': request.form['comment'],
+        'user': session['id'],
+        'message_id':request.form['message_id']
+    }
+    query = "INSERT INTO comments(user_id, comment, message_id, created_at, updated_at) VALUES(:user, :comment, :message_id, NOW(), NOW())"
+    mysql.query_db(query, data)
     return redirect('/')
 app.run(debug=True)
